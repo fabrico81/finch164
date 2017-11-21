@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="HibernateExample">
+	<property name="build.dir" value="target" />
+
+	<!-- da cambiare se si vuole lanciare il task ant stand alone -->
+	<property name="maven.repository" value="C:\Users\Faber\.m2\repository" />
+	<!-- da cambiare se si vuole lanciare il task ant stand alone, esempio per il mio ambiente
+	-->
+
+	<property name="hibernate-tools.dir" value="${maven.repository}\org\hibernate\hibernate-tools\3.6.0.CR1\hibernate-tools-3.6.0.CR1.jar" />
+	<property name="hibernate.dir" value="${maven.repository}\org\hibernate\hibernate-core\3.6.9.Final\hibernate-core-3.6.9.Final.jar" />
+	<property name="hibernate-commons-annotations.dir" value="${maven.repository}\org\hibernate\hibernate-commons-annotations\3.2.0.Final\hibernate-commons-annotations-3.2.0.Final.jar" />
+	<property name="hibernate-annotations.dir" value="${maven.repository}\org\hibernate\hibernate-annotations\3.4.0.GA\hibernate-annotations-3.4.0.GA.jar" />
+	<property name="jcl-over-slf4j.dir" value="${maven.repository}\org\slf4j\jcl-over-slf4j\1.6.1\jcl-over-slf4j-1.6.1.jar" />
+	<property name="slf4j-log4j12.dir" value="${maven.repository}\org\slf4j\slf4j-log4j12\1.6.1\slf4j-log4j12-1.6.1.jar" />
+	<property name="slf4j-api.dir" value="${maven.repository}\org\slf4j\slf4j-api\1.6.1\slf4j-api-1.6.1.jar" />
+	<property name="log4j.dir" value="${maven.repository}\log4j\log4j\1.2.15\log4j-1.2.15.jar" />
+	<property name="dom4j.dir" value="${maven.repository}\dom4j\dom4j\1.6.1\dom4j-1.6.1.jar" />
+	<property name="freemarker.dir" value="${maven.repository}\org\freemarker\freemarker\2.3.14\freemarker-2.3.14.jar" />
+	<property name="postgres.jdbc.dir" value="${maven.repository}\org\postgresql\postgresql\42.1.4\postgresql-42.1.4.jar" />
+	<property name="jtidy.dir" value="${maven.repository}\jtidy\jtidy\4aug2000r7-dev\jtidy-4aug2000r7-dev.jar" />
+	<property name="cglib.dir" value="${maven.repository}\cglib\cglib\2.2.2\cglib-2.2.2.jar" />
+	<property name="commons-collections.dir" value="${maven.repository}\commons-collections\commons-collections\3.2.1\commons-collections-3.2.1.jar" />
+	<property name="hibernate-jpa-2.0-api.dir" value="${maven.repository}\org\hibernate\javax\persistence\hibernate-jpa-2.0-api\1.0.1.Final\hibernate-jpa-2.0-api-1.0.1.Final.jar" />
+
+	<property name="daoImpl.package" value="com.testmyapplication.finch.persistence.base.impl" />
+	<property name="daoService.package" value="com.testmyapplication.finch.persistence.base.service" />
+	<property name="entityBean.package" value="com.testmyapplication.finch.persistence.base.bean" />
+	<property name="daoImpl.dir" value="src/main/java/com/testmyapplication/finch/persistence/base/impl" />
+	<property name="daoService.dir" value="src/main/java/com/testmyapplication/finch/persistence/base/service" />
+	<property name="entityBean.dir" value="src/main/java/com/testmyapplication/finch/persistence/base/bean" />
+
+
+	<!-- classpath da essere utilizzato per lanciare stand alone l'ant per la generazione degli artifatti. -->
+	<!-- Bisogna però aggiungere la proprietà classpathref="toolslib" al tag <taskdef name="hibernatetool" ....> -->
+	<path id="toolslib">
+		<path location="${hibernate-tools.dir}" />
+		<path location="${hibernate.dir}" />
+		<path location="${hibernate-commons-annotations.dir}" />
+		<path location="${hibernate-annotations.dir}" />
+		<path location="${jcl-over-slf4j.dir}" />
+		<path location="${slf4j-log4j12.dir}" />
+		<path location="${slf4j-api.dir}" />
+		<path location="${log4j.dir}" />
+		<path location="${dom4j.dir}" />
+		<path location="${freemarker.dir}" />
+		<path location="${postgres.jdbc.dir}" />
+		<path location="${jtidy.dir}" />
+		<path location="${cglib.dir}" />
+		<path location="${commons-collections.dir}" />
+		<path location="${hibernate-jpa-2.0-api.dir}" />
+		<path location="." />
+	</path>
+
+	<!-- ant targets -->
+	<target name="hbm2java">
+		<mkdir dir="${build.dir}/classes"/>
+		<delete>
+			<fileset dir="${build.dir}/classes" includes="**/*.*" />
+		</delete>
+		<mkdir dir="${entityBean.dir}"/>
+		<delete>
+			<fileset dir="${entityBean.dir}" includes="**/*.*" />
+		</delete>
+
+		<javac classpathref="toolslib" srcdir="src/main/java" destdir="${build.dir}/classes" includes="com/testmyapplication/finch/persistence/reversestrategy/**/*.*" includeantruntime="false"/>
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib" />
+		<hibernatetool destdir="src/main/java">
+			<!-- classpath aggiuntivo per fargli leggere il file log4j.properties che serve per tunare i logs del tool -->
+			<classpath>
+				<path location="src/main/resources" />
+				<path location="${build.dir}/classes" />
+			</classpath>
+			<jdbcconfiguration propertyfile="src/main/resources/database/database.properties"  reversestrategy="com.testmyapplication.finch.persistence.reversestrategy.TableIdentifierGenerationStrategy" packagename="${entityBean.package}" />
+			<hbm2java jdk5="true" ejb3="true" />
+		</hibernatetool>
+		<javac classpathref="toolslib" srcdir="src/main/java" destdir="${build.dir}/classes" includes="com/testmyapplication/finch/persistence/bean/**/*.*" includeantruntime="false"/>
+	</target>
+	<target name="daoPostg" depends="hbm2java">
+		<mkdir dir="${daoService.dir}"/>
+		<delete>
+			<fileset dir="${daoService.dir}" includes="**/*.**" />
+		</delete>
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib"/>
+		<hibernatetool destdir="src/main/java">
+			<!-- classpath aggiuntivo per fargli leggere il file log4j.properties che serve per tunare i logs del tool -->
+			<classpath>
+				<path location="src/main/resources" />
+				<path location="${build.dir}/classes" />
+			</classpath>
+			<jdbcconfiguration propertyfile="src/main/resources/database/database.properties" reversestrategy="com.testmyapplication.finch.persistence.reversestrategy.TableIdentifierGenerationStrategy" packagename="${daoService.package}" />
+			<property key="daoPackage" value="${daoService.package}" />
+			<property key="entityPackage" value="${entityBean.package}" />
+			<hbmtemplate filepattern="{package-name}/I{class-name}DAO.java" templatepath="src/main/resources/hbmtemplates/dao/" template="daoservice.ftl" exporterclass="org.hibernate.tool.hbm2x.DAOExporter" />
+		</hibernatetool>
+	</target>
+	<target name="daoimplPostg" depends="daoPostg">
+		<mkdir dir="${daoImpl.dir}"/>
+		<delete>
+			<fileset dir="${daoImpl.dir}" includes="**/*.**" />
+		</delete>
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib"/>
+		<hibernatetool destdir="src/main/java">
+			<!-- classpath aggiuntivo per fargli leggere il file log4j.properties che serve per tunare i logs del tool -->
+			<classpath>
+				<path location="src/main/resources" />
+				<path location="${build.dir}/classes" />
+			</classpath>
+			<jdbcconfiguration propertyfile="src/main/resources/database/database.properties" reversestrategy="com.testmyapplication.finch.persistence.reversestrategy.TableIdentifierGenerationStrategy" packagename="${daoImpl.package}" />
+			<property key="daoPackage" value="${daoService.package}" />
+			<property key="entityPackage" value="${entityBean.package}" />
+			<property key="persistenceUnit" value="${persistenceUnit.mysql}" />
+			<property key="responsePackage" value="${resourceVmc2.package}" />
+			<hbmtemplate filepattern="{package-name}/{class-name}DAO.java" templatepath="src/main/resources/hbmtemplates/dao/" template="dao.ftl" exporterclass="org.hibernate.tool.hbm2x.DAOExporter" />
+		</hibernatetool>
+	</target>
+	<target name="clean">
+		<delete>
+			<fileset dir="${entity.dir}" includes="**/*.**" />
+			<fileset dir="${daoImpl.dir}" includes="**/*.**" />
+			<fileset dir="${dao.dir}" includes="**/*.**" />
+		</delete>
+	</target>
+	<target name="test">
+		<echo message="proprietà da maven ${plugin_classpath}" />
+	</target>
+</project>

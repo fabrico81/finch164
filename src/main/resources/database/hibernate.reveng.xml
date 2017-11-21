@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+<type-mapping>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Boolean"  precision="1" not-null="true"> </sql-type>
+
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Byte" precision="2"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Short" precision="3"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Short" precision="4"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Integer" precision="5"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Integer" precision="6"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Integer" precision="7"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Integer" precision="8"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Integer" precision="9"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="10"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="11"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="12"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="13"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="14"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="15"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="16"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="17"> </sql-type>
+ <sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" precision="18"> </sql-type>
+ 
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Boolean"  precision="1" not-null="true"></sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Byte" precision="2"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Short" precision="3"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Short" precision="4"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Integer" precision="5"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Integer" precision="6"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Integer" precision="7"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Integer" precision="8"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Integer" precision="9"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="10"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="11"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="12"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="13"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="14"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="15"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="16"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="17"> </sql-type>
+ <sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Long" precision="18"> </sql-type>
+</type-mapping>
+<!-- BIN$ is recycle bin tables in Oracle -->
+<table-filter match-name="BIN$.*" exclude="false" />
+<!-- Exclude DoNotWantIt from all catalogs/schemas -->
+<!-- <table-filter match-name="DoNotWantIt" exclude="true" />-->
+<!-- exclude all tables from the schema SCHEMA in catalog BAD. -->
+<!-- <table-filter match-catalog="BAD" match-schema="SCHEMA" match-name=".*"
+exclude="true" />-->
+</hibernate-reverse-engineering>

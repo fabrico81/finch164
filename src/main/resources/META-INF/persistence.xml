@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+			 version="2.0">
+	<persistence-unit name="vmcServerPU">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<jta-data-source>java:jdbc/vasMonCatOracleDS</jta-data-source>
+
+		<class>com.testmyapplication.finch.persistence.base.bean.User</class>
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+
+
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/test"/>
+			<property name="javax.persistence.jdbc.user" value="postgres"/>
+			<property name="javax.persistence.jdbc.password" value="postgres"/>
+
+
+			<property name="hibernate.connection.datasource" value="java:jdbc/vasMonCatOracleDS"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.jdbc.fetch_size" value="30"/>
+
+			<property name="hibernate.ejb.cfgfile" value="/META-INF/VmcHibernate.cfg.xml"/>
+			<!-- If not specified, default region prefix is equal to persistence-unit name -->
+			<property name="hibernate.cache.region_prefix" value="VASMONCAT-WEBAPP"/>
+
+			<!--		<property name="hibernate.show_sql" value="true"/> -->
+			<property name="hibernate.format_sql" value="true"/>
+
+
+		</properties>
+	</persistence-unit>
+</persistence>

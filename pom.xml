@@ -4,10 +4,427 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- The Basics -->
     <groupId>com.test.myapplication</groupId>
     <artifactId>test-myapplication</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <initialize.phase>pre-clean</initialize.phase>
+        <generate.sources.phase>clean</generate.sources.phase>
+        <deploy.enviroment>standalone</deploy.enviroment>
+        <arquillian.version>1.0.0.Alpha5</arquillian.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <properties>
+                <initialize.phase>initialize</initialize.phase>
+                <generate.sources.phase>generate-sources</generate.sources.phase>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-tools</artifactId>
+            <version>3.6.0.CR1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>1.8.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>1.5</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-lgpl</artifactId>
+            <version>1.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-lgpl</artifactId>
+            <version>1.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-xc</artifactId>
+            <version>1.9.2</version>
+            <scope>test</scope>
+        </dependency>
 
 
+        <!-- <dependency> -->
+        <!-- <groupId>asm</groupId> -->
+        <!-- <artifactId>asm-all</artifactId> -->
+        <!-- <version>3.0</version> -->
+        <!-- <scope>test</scope> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.jboss.resteasy</groupId> -->
+        <!-- <artifactId>tjws</artifactId> -->
+        <!-- <version>2.2.2.GA</version> -->
+        <!-- <scope>test</scope> -->
+        <!-- </dependency> -->
+        <dependency>
+            <groupId>org.jboss.arquillian</groupId>
+            <artifactId>arquillian-junit</artifactId>
+            <version>${arquillian.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>2.3.6.Final</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxb-provider</artifactId>
+            <version>2.3.6.Final</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>stax-api</artifactId>
+                    <groupId>javax.xml.stream</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jettison-provider</artifactId>
+            <version>2.3.6.Final</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>sahoo</groupId>-->
+            <!--<artifactId>pxml-javac-plugin</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<type>jar</type>-->
+            <!--<scope>compile</scope>-->
+            <!--<optional>true</optional>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<artifactId>jaxb-api</artifactId>-->
+                    <!--<groupId>javax.xml.bind</groupId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>1.2.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.4.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>xml-apis</artifactId>
+                    <groupId>xml-apis</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>nl.flotsam</groupId>-->
+            <!--<artifactId>xeger</artifactId>-->
+            <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
+
+
+
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.1.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <!-- <dependency> -->
+        <!-- <groupId>ar.com.fdvs</groupId> -->
+        <!-- <artifactId>DynamicJasper-core-fonts</artifactId> -->
+        <!-- <version>1.0</version> -->
+        <!-- </dependency> -->
+
+        <!-- <dependency> -->
+        <!-- <groupId>org.springframework</groupId> -->
+        <!-- <artifactId>org.springframework.core</artifactId> -->
+        <!-- <version>3.1.1.RELEASE</version> -->
+        <!-- <type>jar</type> -->
+        <!-- <scope>compile</scope> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.springframework</groupId> -->
+        <!-- <artifactId>org.springframework.beans</artifactId> -->
+        <!-- <version>3.1.1.RELEASE</version> -->
+        <!-- <type>jar</type> -->
+        <!-- <scope>compile</scope> -->
+        <!-- </dependency> -->
+
+
+
+        <dependency>
+            <groupId>com.unboundid</groupId>
+            <artifactId>unboundid-ldapsdk</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/common/constant/*.java</include>
+                    <include>**/controller/common/bean/base/*.java</include>
+                    <include>**/controller/common/bean/request/*.java</include>
+                    <include>**/controller/common/bean/advanced/*.java</include>
+                    <include>**/controller/common/restdatasource/marker/*.java</include>
+                    <include>**/controller/common/restdatasource/marker/impl/*.java</include>
+                    <include>**/controller/area/netsafe/bean/*.java</include>
+                    <include>**/controller/area/monitoring/bean/*.java</include>
+                    <include>**/controller/area/main/bean/*.java</include>
+                    <include>**/controller/area/bic/bean/*.java</include>
+                    <include>**/*.gwt.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>META-INF/*</include>
+                    <include>jndi.properties</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <includes>
+                    <include>META-INF/persistence.xml</include>
+                </includes>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <classifier>${deploy.environment}</classifier>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>generate_jpa_classes</id>
+                        <phase>${generate.sources.phase}</phase>
+                        <configuration>
+                            <target>
+                                <property name="maven.repository" value="${settings.localRepository}" />
+                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
+                                <!--
+                                <property name="daoImpl.package" value="it.telecom.vmc.webapp.server.persistence.base.impl" />
+                                <property name="dao.package" value="it.telecom.vmc.webapp.server.persistence.base.service" />
+                                <property name="entity.package" value="it.telecom.vmc.webapp.server.persistence.base.bean" />
+                                <property name="response.package" value="it.telecom.vmc.webapp.server.controller.common.bean.base" />
+                                <property name="daoImpl.dir" value="src/main/java/it/telecom/vmc/webapp/server/persistence/base/impl" />
+                                <property name="dao.dir" value="src/main/java/it/telecom/vmc/webapp/server/persistence/base/service" />
+                                <property name="entity.dir" value="src/main/java/it/telecom/vmc/webapp/server/persistence/base/bean" />
+                                <property name="resource.package" value="it.telecom.vmc.webapp.server.controller.common.bean.base" />
+                                <property name="persistenceUnit.oracle" value="vmcServerPU" />
+                                -->
+                                <ant antfile="${basedir}/build.xml">
+                                    <target name="daoimplPostg" />
+                                </ant>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>delete_entities</id>
+                        <phase>${initialize.phase}</phase>
+                        <configuration>
+                            <target name="delete persistence dir base">
+                                <delete dir="src/main/java/com/testmyapplication/finch/controller/common/bean/base" includeemptydirs="true" />
+                                <mkdir dir="src/main/java/com/testmyapplication/finch/controller/common/bean/base" />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+
+
+                    <execution>
+                        <id>copy</id>
+                        <phase>generate-test-resources</phase>
+                        <configuration>
+                            <target name="copy persistence conf file">
+                                <copy file="${basedir}/target/classes/META-INF/persistence.xml" tofile="${basedir}/target/test-classes/META-INF/persistence.xml" />
+                                <copy file="${basedir}/target/classes/META-INF/VmcHibernate.cfg.xml" tofile="${basedir}/target/test-classes/META-INF/VmcHibernate.cfg.xml" />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <!--<dependency>-->
+                        <!--<groupId>com.sun</groupId>-->
+                        <!--<artifactId>tools</artifactId>-->
+                        <!--<version>1.6.0</version>-->
+                        <!--<scope>system</scope>-->
+                        <!--<systemPath>${env.JAVA_HOME}\..\lib\tools.jar</systemPath>-->
+                    <!--</dependency>-->
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-commons-annotations</artifactId>
+                        <version>3.2.0.Final</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>jcl-over-slf4j</artifactId>
+                        <version>1.6.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                        <version>1.6.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                        <version>1.6.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                        <version>1.2.17</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>dom4j</groupId>
+                        <artifactId>dom4j</artifactId>
+                        <version>1.6.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.freemarker</groupId>
+                        <artifactId>freemarker</artifactId>
+                        <version>2.3.14</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>jtidy</groupId>
+                        <artifactId>jtidy</artifactId>
+                        <version>4aug2000r7-dev</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>cglib</groupId>
+                        <artifactId>cglib</artifactId>
+                        <version>2.2.2</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>commons-collections</groupId>
+                        <artifactId>commons-collections</artifactId>
+                        <version>3.2.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate.javax.persistence</groupId>
+                        <artifactId>hibernate-jpa-2.0-api</artifactId>
+                        <version>1.0.1.Final</version>
+                    </dependency>
+                    <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.1.4</version>
+                    </dependency>
+
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>2.2.4</version>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>${generate.sources.phase}</phase>
+                        <configuration>
+                            <includes>
+                                <include>com/testmyapplication/finch/persistence/base/bean/*.java</include>
+                            </includes>
+                            <outputDirectory>src/main/java</outputDirectory>
+                            <processors>
+                                <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                            </processors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
 
 </project>
